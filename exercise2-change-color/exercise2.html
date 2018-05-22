@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ex2</title>
+</head>
+<body>
+    
+    <div id="pie"></div>
+    
+    <script>
+
+//load pie.svg into the DOM
+document.addEventListener('DOMContentLoaded', loadSvg);
+    async function loadSvg() {
+        const svgData = await fetch('pie.svg');
+        const mySvg = await svgData.text();
+        document.querySelector('#pie').innerHTML = mySvg;
+    } 
+
+//find the id's and change color on the pieslices on mouseover
+document.addEventListener('mouseover', event => {
+        
+        const id = event.target.id;
+        const item = event.target;
+        const originalColor = event.target.getAttribute('fill');
+        if(id !== 'Layer_1' && id !== '') item.setAttribute('fill', '#f800f8');
+        
+//change the color back on mouseout
+        document.addEventListener('mouseout',()=>{
+            console.log(originalColor);
+            item.setAttribute('fill', originalColor);
+        })
+        });
+    </script>
+</body>
