@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #map{
+            width: 60%;
+            height: 60%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="info">
+        <p>city-name</p>
+        <p>tax-base</p>
+    </div>
+    <div id="map"></div>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSvg();
+            loadJson();
+        });
+        
+        async function loadSvg() {
+            const svgData = await fetch('map.svg');
+            const mySvg = await svgData.text();
+            document.querySelector('#map').innerHTML = mySvg;
+        }
+        async function loadJson() {
+            const jsonData = await fetch('data.json');
+            const myJson = await jsonData.json();
+            myJson.forEach(data => showInfo(data));
+        }
+        function showInfo(data) {
+            document.addEventListener('mouseover', event => {
+                
+                const id = event.target.parentElement.id;
+                if(id === data.city){
+                    document.querySelector('#info p:first-child').textContent = data.city.substr(0,1).toUpperCase() + data.city.substring(1, data.city.length).toLowerCase();
+                    document.querySelector('#info p:last-child').textContent = data['tax-base'];
+                }
+             });
+        }
+        document.addEventListener('mouseover', event => {
+            const id = event.target.parentElement.id;
+            const item = event.target;
+            const originalColor = item.getAttribute('fill');
+            item.setAttribute('fill', '#ffff00');
+            document.addEventListener('mouseout', () => {
+                item.setAttribute('fill', originalColor);
+            });
+});
+    </script>
+</body>
+
+</html>
