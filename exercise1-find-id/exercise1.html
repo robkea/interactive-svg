@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+            #layers {
+                width: 100vw;
+                height: 100vh;
+            }
+            #info {
+                width: 100vw;
+                height: 100vh;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="layers"></div>
+        <div id="info"></div>
+        <script>
+
+    //load layers.svg into the DOM
+    document.addEventListener('DOMContentLoaded', () =>{
+        loadSvg();
+        loadJson();
+        });
+        async function loadSvg() {
+            const svgData = await fetch('layers.svg');
+            const mySvg = await svgData.text();
+            document.querySelector('#layers').innerHTML = mySvg;
+        } 
+
+    //put your text in a json file
+    //load the json
+    async function loadJson() {
+        const jsonData = await fetch('text.json');
+        const myJson = await jsonData.json();
+        myJson.forEach(data => showInfo(data));
+    }
+
+    //show text on mouseover
+    function showInfo(data) {
+            document.addEventListener('mouseover', event => {
+            
+            const itemId = event.target.id;
+            if(itemId === data.id){
+                document.querySelector('#info').textContent = data.description;
+            }
+        });
+    }
+        </script>
+    </body>
+    </html>
